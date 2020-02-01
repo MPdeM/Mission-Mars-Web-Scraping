@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup as bs
 import requests
 from splinter import Browser
 import time
+import pandas as pd
 
 def init_browser():
     # @NOTE: Replace the path with your actual path to the chromedriver
@@ -19,20 +20,23 @@ def scrape_info():
     # import ipdb; ipdb.set_trace()
 
     soup = bs(browser.html, "html.parser")
-    results = soup.find_all('div', class_='slide')
-    
-    # titles = results.find('div', class_="content_title" ).a.text
-    parr =results.find_all('div', class_="rollover_description_inner")[0].text
 
-    # news_title1= titles[1]
+    # results = soup.find_all('div', class_='slide')
+    # titles = results.find('div', class_="content_title" ).a.text
+    # parr =results.find_all('div', class_="rollover_description_inner")[0].text
+
+    titles = soup.find('div', class_="content_title" ).a.text
+    parr =soup.find_all('div', class_="rollover_description_inner")[0].text
+    news_title= titles[1]
     news_p= parr[1]
     
 # #scrap the link for the Featured Image from https://www.jpl.nasa.gov/spaceimages.
     url= 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
-
+    time.sleep(1)
     browser.visit(url)
     full_image_elem = browser.find_by_id('full_image')
     full_image_elem.click()
+    time.sleep(2)
     soup = bs(browser.html, 'html.parser')
     img_element = soup.find('img', "fancybox-image")
 
@@ -40,6 +44,7 @@ def scrape_info():
     
 # #scrap the latest tweet with Mars weather
     url= 'https://twitter.com/marswxreport?lang=en'
+
     response = requests.get(url)
     soup = bs(response.content, 'html.parser')
     #access the data inside the descendents from tweet class
@@ -53,8 +58,9 @@ def scrape_info():
     df=tables[2]
     df.columns = ['description', 'value']
     df.set_index('description', inplace=True)
-    html_table = df.to_html()
-    df.to_html('table.html')
+    html_table = df.to_html()[0]
+    #df.to_html('table.html')
+
     # USGS Astrogeology obtain high resolution images for each of Mar's hemisphere
 
     url= 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
@@ -93,9 +99,10 @@ def scrape_info():
         "news_p ": news_p,
         "featured_image_url ": featured_image_url ,
         "mars_weather": mars_weather,
-        "Hemi_image_urls":Hemi_image_urls
+        "Hemi_image_urls":Hemi_image_urls,
+        "html_table": html_table
     }
-
+    print()
     # Close the browser after scraping
     browser.quit()
 

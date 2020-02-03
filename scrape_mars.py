@@ -59,8 +59,7 @@ def scrape_info():
     df.columns = ['description', 'value']
     df.set_index('description', inplace=True)
     html_table = df.to_html()
-    #df.to_html('table.html')
-
+    
     # USGS Astrogeology obtain high resolution images for each of Mar's hemisphere
 
     url= 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'

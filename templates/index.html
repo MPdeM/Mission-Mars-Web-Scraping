@@ -23,7 +23,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card" id="news_card">
                     <!-- <div class="card-body" id="news_card"> -->
                     <div class="card-body">  
                         <h2>{{ mars.news_title }}</h2>
@@ -34,14 +34,14 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" id="featured_image"> 
             <!-- <div class="col-md-12" id="featured_image"> -->
                 <h2>Featured Mars Image</h2>
                 <img src="{{ mars.featured_image_url }}" alt="Mars Featured Image" id="responsive">
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6" >
+            <div class="col-md-6"  id="weather_card">
             <!-- <div class="col-md-6" id="weather_card"> -->
                 <div class="card">
                     <div class="card-body">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" id="facts_table">
             <!-- <div class="col-md-6" id="facts_table"> -->
                 <section>
                     <h3>Facts About Mars!</h3>
@@ -63,7 +63,7 @@
             <h1 class="hemi_header">Mars Hemispheres</h1>
             {% for hemi_image in mars.hemi_images %}
             
-            <div class="col-md-6" >
+            <div class="col-md-6"  id="hemi_images">
             <!-- <div class="col-md-6" id="hemi_images"> -->
                 <div class="card" style="width: 18rem;">
                     <img src="{{ hemi_image_urls.imag_HR }}" class="card-img-top" alt="Cerberus">

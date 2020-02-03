@@ -29,7 +29,7 @@ def home():
 def scrape():
 
     # Run the scrape function
-    import ipdb; ipdb.set_trace()
+    # import ipdb; ipdb.set_trace()
     mars_data = scrape_mars.scrape_info()
 
     # Update the Mongo database using update and upsert=True

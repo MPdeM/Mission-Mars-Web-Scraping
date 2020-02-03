@@ -5,7 +5,7 @@ import time
 import pandas as pd
 
 def init_browser():
-    # @NOTE: Replace the path with your actual path to the chromedriver
+    # Replace the path with your actual path to the chromedriver
     executable_path = {"executable_path": "./chromedriver"}
     return Browser("chrome", **executable_path, headless=False)
 
@@ -58,7 +58,7 @@ def scrape_info():
     df=tables[2]
     df.columns = ['description', 'value']
     df.set_index('description', inplace=True)
-    html_table = df.to_html()[0]
+    html_table = df.to_html()
     #df.to_html('table.html')
 
     # USGS Astrogeology obtain high resolution images for each of Mar's hemisphere
@@ -83,6 +83,7 @@ def scrape_info():
 
     for eachURL in urls:
         browser.visit(eachURL)
+        time.sleep(2)
         soup = bs(browser.html, 'html.parser')
         img_url = soup.find('div', 'downloads')
         pic=img_url.a['href']
@@ -90,16 +91,20 @@ def scrape_info():
 
     #dictionary with both title and image
 
-    data = {'titles': titles, 'imag_HR': url_hi_res}
-    Hemi_image_urls= pd.DataFrame(data)
+    # data = {'titles': titles, 'imag_HR': url_hi_res}
+    # hemi_image_urls= pd.DataFrame(data)
+    hemi_image_urls=[]
+    for key, val in zip(titles, url_hi_res):
+        hemi_image_urls.append({key: val})
+
 
       # Store data in a dictionary
     mars_data = {
         "news_title": news_title,
         "news_p ": news_p,
-        "featured_image_url ": featured_image_url ,
+        "featured_image_url": featured_image_url ,
         "mars_weather": mars_weather,
-        "Hemi_image_urls":Hemi_image_urls,
+        "hemi_image_urls":hemi_image_urls,
         "html_table": html_table
     }
     print()
